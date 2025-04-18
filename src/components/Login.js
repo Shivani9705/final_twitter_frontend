@@ -3,8 +3,8 @@ import axios from "axios";
 import { USER_API_END_POINT } from "../utils/constant";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
-// import { getUser } from '../redux/userSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from '../redux/userSlice';
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -14,15 +14,15 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
-  // const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
 
   // 🔄 Redirect if already logged in
-  // useEffect(() => {
-  //   if (user) {
-  //     navigate("/home");
-  //   }
-  // }, [user, navigate]);
+  useEffect(() => {
+    if (user) {
+      navigate("/home");
+    }
+  }, [user, navigate]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -40,7 +40,7 @@ const Login = () => {
         });
 
         if (res.data.success) {
-          // dispatch(getUser(res.data.user)); // ✅ save to Redux
+          dispatch(getUser(res.data.user)); // ✅ save to Redux
           toast.success(res.data.message);
           navigate("/home"); // ✅ go to home
         }
